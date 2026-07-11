@@ -1,14 +1,15 @@
 import express, { Request, Response } from "express";
 import helmet from "helmet";
 import cors from "cors";
+import { API_BASE_PATH } from "./constants/api.constants";
+import router from "./routes/index.js";
 
 const app = express();
 
 app.use(helmet());
 app.use(cors());
-
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).json({ status: "OK", message: "Welcome to VEOLMS System" });
-});
+app.use(API_BASE_PATH, router);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 export default app;
