@@ -3,6 +3,7 @@ import helmet from "helmet";
 import cors from "cors";
 import { API_BASE_PATH } from "./constants/api.constants";
 import router from "./routes/index.js";
+import { config } from "./config";
 
 const app = express();
 
