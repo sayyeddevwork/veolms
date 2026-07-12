@@ -9,7 +9,8 @@
     "esModuleInterop": true /* Emits additional JavaScript to ease support for importing CommonJS modules */,
     "skipLibCheck": true /* Skip type checking of declaration files */,
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file */,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*"] /* Compile everything inside the src folder */
 }

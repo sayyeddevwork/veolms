@@ -1,11 +1,10 @@
-import { CookieOptions } from "express";
 import { EnvSchema } from "./env.js";
 
 export const buildAppConfig = (env: EnvSchema) => {
   const isProduction = env.NODE_ENV === "production";
   const isTest = env.NODE_ENV === "test";
   const isDevelopment = env.NODE_ENV === "development";
-
+  const corsOrigins = env.CLIENT_URL.split(",");
   return {
     env: env.NODE_ENV,
     isProduction,
@@ -13,6 +12,9 @@ export const buildAppConfig = (env: EnvSchema) => {
     isDevelopment,
     port: env.PORT,
     appName: env.APP_NAME,
+    logLevel: env.LOG_LEVEL,
+    logPretty: env.LOG_PRETTY,
+    corsOrigins,
   };
 };
 
