@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String       @id @default(cuid())
+  name         String
+  email        String       @unique
+  passwordHash String?
+  provider     String       @default("local")
+  googleId     String?      @unique
+  role         Role         @default(STUDENT)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  auditLogs    AuditLog[]
+  enrollments  Enrollment[]
+  payments     Payment[]
+  progress     Progress[]
+
+  @@index([email])
+}
+
+model Course {
+  id          String       @id @default(cuid())
+  title       String
+  description String
+  thumbnail   String
+  price       Int
+  published   Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  enrollments Enrollment[]
+  payments    Payment[]
+  sections    Section[]
+
+  @@index([published])
+}
+
+model Section {
+  id        String   @id @default(cuid())
+  title     String
+  order     Int
+  courseId  String
+  createdAt DateTime @default(now())
+  lessons   Lesson[]
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@index([courseId])
+}
+
+model Lesson {
+  id        String     @id @default(cuid())
+  title     String
+  videoRef  String
+  duration  Int        @default(0)
+  isPreview Boolean    @default(false)
+  order     Int
+  sectionId String
+  createdAt DateTime   @default(now())
+  section   Section    @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  progress  Progress[]
+
+  @@index([sectionId])
+}
+
+model Enrollment {
+  id         String   @id @default(cuid())
+  userId     String
+  courseId   String
+  paymentId  String?  @unique
+  enrolledAt DateTime @default(now())
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  payment    Payment? @relation(fields: [paymentId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([userId])
+  @@index([courseId])
+}
+
+model Payment {
+  id                String        @id @default(cuid())
+  userId            String
+  courseId          String
+  razorpayOrderId   String        @unique
+  razorpayPaymentId String?       @unique
+  razorpaySignature String?
+  amount            Int
+  currency          String        @default("INR")
+  status            PaymentStatus @default(CREATED)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  enrollment        Enrollment?
+  course            Course        @relation(fields: [courseId], references: [id])
+  user              User          @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([razorpayOrderId])
+}
+
+model Progress {
+  id             String   @id @default(cuid())
+  userId         String
+  lessonId       String
+  watchedSeconds Int      @default(0)
+  completed      Boolean  @default(false)
+  lastWatchedAt  DateTime @default(now())
+  lesson         Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([userId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String
+  action    String
+  targetId  String?
+  metadata  Json?
+  ip        String?
+  createdAt DateTime @default(now())
+  actor     User     @relation(fields: [actorId], references: [id])
+
+  @@index([actorId, createdAt])
+  @@index([targetId, createdAt])
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum PaymentStatus {
+  CREATED
+  PAID
+  FAILED
+}

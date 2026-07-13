@@ -77,3 +77,4 @@ docker-compose.override.yml
 .cache/
 .turbo/
 *.pem
+/src/generated/prisma

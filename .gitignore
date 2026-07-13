@@ -58,3 +58,4 @@ Thumbs.db
 .eslintcache
 .parcel-cache
 .vite/
+/generated/prisma

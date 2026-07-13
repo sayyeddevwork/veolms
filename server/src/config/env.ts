@@ -14,6 +14,7 @@ const envSchema = z.object({
     .default("true")
     .transform((val) => val === "true"),
   CLIENT_URL: z.string().url({ message: "CLIENT_URL must be a valid URL" }),
+  SLOW_QUERY_THRESHOLD_MS: z.coerce.number().int().positive().default(200),
 });
 
 export type EnvSchema = z.infer<typeof envSchema>;

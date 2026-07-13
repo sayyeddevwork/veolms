@@ -15,6 +15,7 @@ export const buildAppConfig = (env: EnvSchema) => {
     logLevel: env.LOG_LEVEL,
     logPretty: env.LOG_PRETTY,
     corsOrigins,
+    slowQueryThresholdMs: env.SLOW_QUERY_THRESHOLD_MS,
   };
 };
 
