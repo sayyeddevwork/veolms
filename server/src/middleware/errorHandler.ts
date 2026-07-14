@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction } from "express";
+import { ZodError } from "zod";
 import { Prisma } from "../infrastructure/database/prisma.client.js";
 import { AppError } from "../shared/errors/AppError.js";
 import { HttpStatusCode } from "../constants/httpStatusCodes.js";
 import { Messages } from "../constants/messages.js";
 import { sendError } from "../shared/response/apiResponse.js";
 import { logError } from "../infrastructure/logging/index.js";
+import { ErrorDetail } from "../shared/response/apiResponse.js";
 
 export const globalErrorHandler = (
   err: unknown,
@@ -48,14 +50,18 @@ export const globalErrorHandler = (
     }
   }
 
-  // Zod validation errors that slip through without being wrapped
-  if (err instanceof Error && err.name === "ZodError") {
+  // Zod validation errors that slip through without being wrapped by validate.ts
+  if (err instanceof ZodError) {
+    const errors: ErrorDetail[] = err.issues.map((issue) => ({
+      field: issue.path.join(".") || undefined,
+      message: issue.message,
+    }));
     return sendError(
       res,
       req.requestId,
       HttpStatusCode.UNPROCESSABLE_ENTITY,
       Messages.VALIDATION_FAILED,
-      (err as any).errors,
+      errors,
     );
   }
 
