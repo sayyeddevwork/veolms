@@ -1,20 +1,21 @@
+// shared/errors/AppError.ts
+import { ErrorDetail } from "../response/apiResponse.js";
+
 export class AppError extends Error {
-  public readonly statusCode: number;
-  public readonly isOperational: boolean;
-  public readonly errors: unknown[];
+  statusCode: number;
+  errors: ErrorDetail[];
+  isOperational: boolean;
 
   constructor(
     statusCode: number,
     message: string,
-    errors: unknown[] = [],
+    errors: ErrorDetail[] = [],
     isOperational = true,
   ) {
     super(message);
-    this.name = this.constructor.name;
     this.statusCode = statusCode;
     this.errors = errors;
     this.isOperational = isOperational;
-
-    Error.captureStackTrace(this, this.constructor);
+    Object.setPrototypeOf(this, AppError.prototype);
   }
 }

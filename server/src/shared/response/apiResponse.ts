@@ -1,27 +1,47 @@
 import { Response } from "express";
+export interface ErrorDetail {
+  field?: string;
+  message: string;
+}
+interface ApiResponseBody<T = unknown> {
+  success: boolean;
+  message: string;
+  errors: ErrorDetail[];
+  requestId: string;
+  data?: T;
+}
 
-export const sendSuccess = (
+export const sendSuccess = <T>(
   res: Response,
+  requestId: string,
   statusCode: number,
   message: string,
-  data: unknown = {},
+  data: T = {} as T,
 ) => {
-  return res.status(statusCode).json({
+  const body: ApiResponseBody<T> = {
     success: true,
     message,
-    data,
-  });
+    errors: [],
+    requestId,
+    ...(data !== undefined ? { data } : {}),
+  };
+  return res.status(statusCode).json(body);
 };
 
-export const sendError = (
+export const sendError = <T = undefined>(
   res: Response,
+  requestId: string,
   statusCode: number,
   message: string,
-  errors: unknown[] = [],
+  errors: ErrorDetail[] = [],
+  data: T = {} as T,
 ) => {
-  return res.status(statusCode).json({
+  const body: ApiResponseBody<T> = {
     success: false,
     message,
     errors,
-  });
+    requestId,
+    ...(data !== undefined ? { data } : {}),
+  };
+  return res.status(statusCode).json(body);
 };

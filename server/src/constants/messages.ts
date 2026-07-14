@@ -13,4 +13,8 @@ export const Messages = {
   // Resource-generic
   DUPLICATE_RESOURCE: "A record with these details already exists",
   RESOURCE_NOT_FOUND: "The requested resource was not found",
+
+  // Server health
+  SERVER_HEALTHY: "Server is healthy",
+  SERVER_UNHEALTHY: "Server is unhealthy",
 } as const;

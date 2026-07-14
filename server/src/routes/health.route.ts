@@ -13,5 +13,6 @@ router.get("/health", (req: Request, res: Response) => {
     uptime: uptimeSeconds,
   });
 });
+router.get("/ready");
 
 export default router;

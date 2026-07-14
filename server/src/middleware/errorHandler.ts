@@ -6,7 +6,7 @@ import { Messages } from "../constants/messages.js";
 import { sendError } from "../shared/response/apiResponse.js";
 import { logError } from "../infrastructure/logging/index.js";
 
-export const errorHandler = (
+export const globalErrorHandler = (
   err: unknown,
   req: Request,
   res: Response,
@@ -17,7 +17,13 @@ export const errorHandler = (
     if (!err.isOperational) {
       logError(err, { requestId: req.id, path: req.originalUrl });
     }
-    return sendError(res, err.statusCode, err.message, err.errors);
+    return sendError(
+      res,
+      req.requestId,
+      err.statusCode,
+      err.message,
+      err.errors,
+    );
   }
 
   // Prisma: unique constraint violation (e.g. duplicate enrollment, duplicate email)
@@ -27,12 +33,18 @@ export const errorHandler = (
         (err.meta?.target as string[] | undefined)?.join(", ") ?? "field";
       return sendError(
         res,
+        req.requestId,
         HttpStatusCode.CONFLICT,
         `A record with this ${target} already exists`,
       );
     }
     if (err.code === "P2025") {
-      return sendError(res, HttpStatusCode.NOT_FOUND, "Record not found");
+      return sendError(
+        res,
+        req.requestId,
+        HttpStatusCode.NOT_FOUND,
+        "Record not found",
+      );
     }
   }
 
@@ -40,6 +52,7 @@ export const errorHandler = (
   if (err instanceof Error && err.name === "ZodError") {
     return sendError(
       res,
+      req.requestId,
       HttpStatusCode.UNPROCESSABLE_ENTITY,
       Messages.VALIDATION_FAILED,
       (err as any).errors,
@@ -50,6 +63,7 @@ export const errorHandler = (
   logError(err, { requestId: req.id, path: req.originalUrl });
   return sendError(
     res,
+    req.requestId,
     HttpStatusCode.INTERNAL_SERVER_ERROR,
     Messages.INTERNAL_SERVER_ERROR,
   );
