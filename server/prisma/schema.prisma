@@ -9,20 +9,24 @@ datasource db {
 }
 
 model User {
-  id           String       @id @default(cuid())
-  name         String
-  email        String       @unique
-  passwordHash String?
-  provider     String       @default("local")
-  googleId     String?      @unique
-  role         Role         @default(STUDENT)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  auditLogs    AuditLog[]
-  enrollments  Enrollment[]
-  payments     Payment[]
-  progress     Progress[]
-
+  id              String       @id @default(cuid())
+  name            String
+  email           String       @unique
+  passwordHash    String?
+  provider        String       @default("local")
+  googleId        String?      @unique
+  role            Role         @default(STUDENT)
+  isEmailVerified Boolean      @default(false)
+  emailVerifiedAt DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  auditLogs       AuditLog[]
+  enrollments     Enrollment[]
+  payments        Payment[]
+  progress        Progress[]
+  sessions        Session[]
+  passwordResetTokens PasswordResetToken[]
+  emailVerificationTokens EmailVerificationToken[]
   @@index([email])
 }
 
@@ -40,6 +44,29 @@ model Course {
   sections    Section[]
 
   @@index([published])
+}
+
+model EmailVerificationToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
 }
 
 model Section {
@@ -115,6 +142,20 @@ model Progress {
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, lessonId])
+  @@index([userId])
+}
+
+model Session {
+  id               String    @id @default(cuid())
+  userId           String
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refreshTokenHash String    @unique
+  userAgent        String?
+  ip               String?
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  createdAt        DateTime  @default(now())
+
   @@index([userId])
 }
 

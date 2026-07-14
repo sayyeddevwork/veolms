@@ -1,5 +1,6 @@
 import { prisma } from "../../infrastructure/database/prisma.client.js";
 import { logger } from "../../infrastructure/logging/index.js";
+import { withRetry } from "../../infrastructure/database/withRetry.js";
 
 interface DependencyCheck {
   status: "up" | "down";
@@ -24,7 +25,7 @@ interface ReadinessResult {
 const checkDatabase = async (): Promise<DependencyCheck> => {
   const start = process.hrtime();
   try {
-    await prisma.$queryRaw`SELECT 1`;
+    await withRetry(() => prisma.$queryRaw`SELECT 1`);
     const [seconds, nanoseconds] = process.hrtime(start);
     return {
       status: "up",

@@ -1,13 +1,22 @@
 import { Response } from "express";
+
 export interface ErrorDetail {
   field?: string;
   message: string;
 }
-interface ApiResponseBody<T = unknown> {
-  success: boolean;
+
+interface ApiSuccessBody<T = unknown> {
+  success: true;
   message: string;
-  errors: ErrorDetail[];
   requestId: string;
+  data: T;
+}
+
+interface ApiErrorBody<T = unknown> {
+  success: false;
+  message: string;
+  requestId: string;
+  errors: ErrorDetail[];
   data?: T;
 }
 
@@ -18,12 +27,11 @@ export const sendSuccess = <T>(
   message: string,
   data: T = {} as T,
 ) => {
-  const body: ApiResponseBody<T> = {
+  const body: ApiSuccessBody<T> = {
     success: true,
     message,
-    errors: [],
     requestId,
-    ...(data !== undefined ? { data } : {}),
+    data,
   };
   return res.status(statusCode).json(body);
 };
@@ -34,13 +42,13 @@ export const sendError = <T = undefined>(
   statusCode: number,
   message: string,
   errors: ErrorDetail[] = [],
-  data: T = {} as T,
+  data?: T,
 ) => {
-  const body: ApiResponseBody<T> = {
+  const body: ApiErrorBody<T> = {
     success: false,
     message,
-    errors,
     requestId,
+    errors,
     ...(data !== undefined ? { data } : {}),
   };
   return res.status(statusCode).json(body);

@@ -1,6 +1,7 @@
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import compression from "compression";
 import { requestIdMiddleware } from "./middleware/requestId.js";
 import { metricsMiddleware } from "./middleware/metrics.js";
@@ -19,6 +20,7 @@ app.use(requestIdMiddleware);
 app.use(metricsMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use(requestLogger);
 app.use(API_BASE_PATH, router);
