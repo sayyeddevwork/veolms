@@ -1,0 +1,20 @@
+meta {
+  name: 07 Student Cannot Create
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses
+  body: json
+  auth: inherit
+}
+
+body:json {
+{}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

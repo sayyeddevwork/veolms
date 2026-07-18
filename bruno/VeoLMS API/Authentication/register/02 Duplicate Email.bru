@@ -1,0 +1,34 @@
+meta {
+  name: 02 Duplicate Email
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/auth/register
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Test User",
+    "email": "student@example.com",
+    "password": "Password@123"
+  }
+}
+
+tests {
+  test("Status 409", function () {
+    expect(res.status).to.equal(409);
+  });
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

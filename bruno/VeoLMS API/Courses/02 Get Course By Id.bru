@@ -1,0 +1,16 @@
+meta {
+  name: 02 Get Course By Id
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

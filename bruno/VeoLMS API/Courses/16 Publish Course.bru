@@ -1,0 +1,20 @@
+meta {
+  name: 16 Publish Course
+  type: http
+  seq: 16
+}
+
+patch {
+  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+{ "published": true }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

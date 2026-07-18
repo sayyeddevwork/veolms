@@ -1,0 +1,20 @@
+meta {
+  name: 17 Unpublish Course
+  type: http
+  seq: 17
+}
+
+patch {
+  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+{ "published": false }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

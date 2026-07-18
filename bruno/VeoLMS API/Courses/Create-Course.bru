@@ -1,0 +1,29 @@
+meta {
+  name: Create-Course
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "title": "HTML & CSS Fundamentals",
+    "description": "Learn the building blocks of the web from scratch.",
+    "thumbnail": "https://placehold.co/600x400",
+    "price": 49900
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

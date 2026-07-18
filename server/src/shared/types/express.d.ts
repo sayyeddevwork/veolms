@@ -1,7 +1,8 @@
+import { UserRole } from "./roles.ts";
 export interface AuthenticatedUser {
   id: string;
   email: string;
-  role: "STUDENT" | "ADMIN";
+  role: UserRole;
 }
 
 declare global {

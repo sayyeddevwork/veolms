@@ -1,0 +1,20 @@
+meta {
+  name: 14 Negative Price
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses
+  body: json
+  auth: inherit
+}
+
+body:json {
+{ "title":"x","description":"x","thumbnail":"https://placehold.co/600x400","price":-1 }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

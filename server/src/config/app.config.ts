@@ -51,6 +51,9 @@ export const buildAppConfig = (env: EnvSchema) => {
       PASS: env.SMTP_PASS,
       FROM: env.SMTP_FROM,
     },
+    RAZORPAY_KEY_ID: env.RAZORPAY_KEY_ID,
+    RAZORPAY_KEY_SECRET: env.RAZORPAY_KEY_SECRET,
+    RAZORPAY_WEBHOOK_SECRET: env.RAZORPAY_WEBHOOK_SECRET,
   };
 };
 

@@ -1,0 +1,25 @@
+meta {
+  name: 05 Create Course Success (Instructor)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses
+  body: json
+  auth: inherit
+}
+
+body:json {
+{
+  "title":"HTML & CSS Fundamentals",
+  "description":"Learn HTML & CSS",
+  "thumbnail":"https://placehold.co/600x400",
+  "price":49900
+}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

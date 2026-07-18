@@ -1,0 +1,20 @@
+meta {
+  name: 12 Missing Thumbnail
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses
+  body: json
+  auth: inherit
+}
+
+body:json {
+{ "title":"x","description":"x","price":100 }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

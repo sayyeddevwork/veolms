@@ -1,0 +1,16 @@
+meta {
+  name: 19 Delete Own Course
+  type: http
+  seq: 19
+}
+
+delete {
+  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

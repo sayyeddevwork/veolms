@@ -37,6 +37,11 @@ const envSchema = z.object({
   SMTP_USER: z.string().min(1, "SMTP_USER is required"),
   SMTP_PASS: z.string().min(1, "SMTP_PASS is required"),
   SMTP_FROM: z.string().min(1, "SMTP_FROM is required"),
+
+  // Razorpay
+  RAZORPAY_KEY_ID: z.string().min(1),
+  RAZORPAY_KEY_SECRET: z.string().min(1),
+  RAZORPAY_WEBHOOK_SECRET: z.string().min(1),
 });
 
 export type EnvSchema = z.infer<typeof envSchema>;

@@ -1,0 +1,20 @@
+meta {
+  name: 18 Instructor Updates Another Course
+  type: http
+  seq: 18
+}
+
+patch {
+  url: {{baseUrl}}{{apiBase}}/courses/{{otherCourseId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+{ "title":"Hack" }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

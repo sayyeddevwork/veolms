@@ -2,16 +2,20 @@ import { z } from "zod";
 
 export const registerSchema = {
   body: z.object({
-    name: z.string().min(1, "Name is required"),
-    email: z.string().email("Invalid email"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    name: z.string().min(2).max(100),
+    email: z.string().email(),
+    password: z
+      .string()
+      .min(8)
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .regex(/[0-9]/, "Password must contain at least one number"),
   }),
 };
 
 export const loginSchema = {
   body: z.object({
-    email: z.string().email("Invalid email"),
-    password: z.string().min(1, "Password is required"),
+    email: z.string().email(),
+    password: z.string().min(1),
   }),
 };
 

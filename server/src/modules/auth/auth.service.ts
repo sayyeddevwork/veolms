@@ -15,6 +15,7 @@ import {
 import { AppError } from "../../shared/errors/AppError.js";
 import { HttpStatusCode } from "../../constants/httpStatusCodes.js";
 import { config } from "../../config/index.js";
+import { UserRole } from "../../shared/types/roles.js";
 
 interface DeviceInfo {
   userAgent?: string;
@@ -35,18 +36,20 @@ interface LoginInput {
 interface UserForToken {
   id: string;
   email: string;
-  role: "STUDENT" | "ADMIN";
+  role: UserRole;
 }
 
 const toSafeUser = (user: {
   id: string;
   name: string;
   email: string;
+  role: string;
   isEmailVerified: boolean;
 }) => ({
   id: user.id,
   name: user.name,
   email: user.email,
+  role: user.role,
   isEmailVerified: user.isEmailVerified,
 });
 
@@ -96,6 +99,7 @@ const register = async (input: RegisterInput, device: DeviceInfo) => {
   });
 
   const rawToken = generateRawToken();
+
   const tokenHash = hashToken(rawToken);
   await prisma.emailVerificationToken.create({
     data: {
@@ -310,6 +314,44 @@ const verifyEmail = async (rawToken: string): Promise<void> => {
   ]);
 };
 
+const resendVerificationEmail = async (userId: string): Promise<void> => {
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user) {
+    throw new AppError(HttpStatusCode.NOT_FOUND, "User not found", [], true);
+  }
+  if (user.isEmailVerified) {
+    throw new AppError(
+      HttpStatusCode.CONFLICT,
+      "Email is already verified",
+      [],
+      true,
+    );
+  }
+
+  // Invalidate any existing unused tokens for this user before issuing a new one
+  await prisma.emailVerificationToken.deleteMany({ where: { userId } });
+
+  const rawToken = generateRawToken();
+  const tokenHash = hashToken(rawToken);
+  await prisma.emailVerificationToken.create({
+    data: {
+      userId: user.id,
+      tokenHash,
+      expiresAt: new Date(
+        Date.now() + config.EMAIL_VERIFICATION_EXPIRY_HOURS * 60 * 60 * 1000,
+      ),
+    },
+  });
+
+  const verifyUrl = `${config.app.corsOrigins[0]}/verify-email?token=${rawToken}`;
+
+  try {
+    await sendVerificationEmail(user.email, user.name, verifyUrl);
+  } catch {
+    // already logged inside sendEmail()
+  }
+};
+
 const changePassword = async (
   userId: string,
   currentPassword: string,
@@ -356,10 +398,11 @@ export default {
   logout,
   logoutAllDevices,
   revokeSession,
-  listSessions,
+  getSessions: listSessions,
   forgotPassword,
   resetPassword,
   verifyEmail,
   changePassword,
   getProfile,
+  resendVerificationEmail,
 };

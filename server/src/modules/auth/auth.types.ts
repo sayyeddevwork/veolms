@@ -1,3 +1,4 @@
+import { UserRole } from "../../shared/types/roles.js";
 export interface RegisterInput {
   name: string;
   email: string;
@@ -13,5 +14,5 @@ export interface AuthUserResponse {
   id: string;
   name: string;
   email: string;
-  role: "STUDENT" | "ADMIN";
+  role: UserRole;
 }

@@ -1,0 +1,18 @@
+meta {
+  name: 03 Invalid Token
+  type: http
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/auth/me
+}
+
+headers {
+  Content-Type: application/json
+}
+
+tests {
+  test("Status 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

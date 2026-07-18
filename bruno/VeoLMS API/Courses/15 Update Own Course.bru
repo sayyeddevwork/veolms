@@ -1,0 +1,20 @@
+meta {
+  name: 15 Update Own Course
+  type: http
+  seq: 15
+}
+
+patch {
+  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+{ "title":"Updated Course" }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

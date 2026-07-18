@@ -115,3 +115,28 @@ export const Messages = {
   using).
 - **Forgot-password** always responds with the same message whether or not
   the email exists, to avoid leaking which emails are registered.
+
+# Course Testing!
+
+GET Published Courses
+GET Course By Id
+GET Invalid Course Id
+GET Unknown Course
+POST Create Course (Instructor)
+POST Create Course (Admin)
+POST Student Cannot Create
+POST Anonymous Cannot Create
+POST Empty Body
+POST Missing Title
+POST Missing Description
+POST Missing Thumbnail
+POST Missing Price
+POST Negative Price
+PATCH Update Own Course
+PATCH Publish Course
+PATCH Unpublish Course
+PATCH Instructor Updates Another Course
+DELETE Delete Own Course
+DELETE Instructor Deletes Another Course
+GET Admin List Courses
+======================

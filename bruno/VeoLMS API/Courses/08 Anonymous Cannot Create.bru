@@ -1,0 +1,20 @@
+meta {
+  name: 08 Anonymous Cannot Create
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses
+  body: json
+  auth: inherit
+}
+
+body:json {
+{}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

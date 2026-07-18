@@ -1,0 +1,31 @@
+meta {
+  name: 08 Empty Body
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/auth/register
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+  }
+}
+
+tests {
+  test("Status 409", function () {
+    expect(res.status).to.equal(409);
+  });
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,18 @@
+meta {
+  name: 01 Request Reset
+  type: http
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/auth/forgot-password
+}
+
+headers {
+  Content-Type: application/json
+}
+
+tests {
+  test("Status 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

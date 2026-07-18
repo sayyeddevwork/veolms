@@ -34,7 +34,6 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
-  console.log(req.body);
   try {
     const device = {
       userAgent: req.headers["user-agent"],
@@ -107,7 +106,7 @@ export const getMe = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 export const getSessions = asyncHandler(async (req: Request, res: Response) => {
-  const sessions = await authService.listSessions(req.user!.id);
+  const sessions = await authService.getSessions(req.user!.id);
 
   const formatted = sessions.map((session) => ({
     id: session.id,
@@ -121,6 +120,34 @@ export const getSessions = asyncHandler(async (req: Request, res: Response) => {
   sendSuccess(res, req.requestId, HttpStatusCode.OK, "Sessions fetched", {
     sessions: formatted,
   });
+});
+// auth.controller.ts
+export const resendVerification = asyncHandler(
+  async (req: Request, res: Response) => {
+    await authService.resendVerificationEmail(req.user!.id);
+    sendSuccess(
+      res,
+      req.requestId,
+      HttpStatusCode.OK,
+      "Verification email sent",
+    );
+  },
+);
+export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
+  const { token } = req.query;
+  if (!token || typeof token !== "string") {
+    throw new AppError(
+      HttpStatusCode.BAD_REQUEST,
+      "Verification token is required",
+    );
+  }
+  await authService.verifyEmail(token);
+  sendSuccess(
+    res,
+    req.requestId,
+    HttpStatusCode.OK,
+    "Email verified successfully",
+  );
 });
 
 export const deleteSession = asyncHandler(

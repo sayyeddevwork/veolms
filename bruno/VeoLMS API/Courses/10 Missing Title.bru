@@ -1,0 +1,20 @@
+meta {
+  name: 10 Missing Title
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses
+  body: json
+  auth: inherit
+}
+
+body:json {
+{ "description":"x","thumbnail":"https://placehold.co/600x400","price":100 }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

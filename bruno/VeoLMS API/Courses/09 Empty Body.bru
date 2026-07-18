@@ -1,0 +1,20 @@
+meta {
+  name: 09 Empty Body
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses
+  body: json
+  auth: inherit
+}
+
+body:json {
+{}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

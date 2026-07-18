@@ -8,42 +8,62 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum Role {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}
+
+enum PaymentStatus {
+  CREATED
+  PAID
+  FAILED
+}
+
 model User {
-  id              String       @id @default(cuid())
-  name            String
-  email           String       @unique
-  passwordHash    String?
-  provider        String       @default("local")
-  googleId        String?      @unique
-  role            Role         @default(STUDENT)
-  isEmailVerified Boolean      @default(false)
-  emailVerifiedAt DateTime?
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
-  auditLogs       AuditLog[]
-  enrollments     Enrollment[]
-  payments        Payment[]
-  progress        Progress[]
-  sessions        Session[]
-  passwordResetTokens PasswordResetToken[]
+  id                      String                    @id @default(cuid())
+  name                    String
+  email                   String                    @unique
+  passwordHash            String?
+  provider                String                    @default("local")
+  googleId                String?                   @unique
+  role                    Role                      @default(STUDENT)
+  isEmailVerified         Boolean                   @default(false)
+  emailVerifiedAt         DateTime?
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+
+  auditLogs               AuditLog[]
+  enrollments             Enrollment[]
+  payments                Payment[]
+  progress                Progress[]
+  sessions                Session[]
+  passwordResetTokens     PasswordResetToken[]
   emailVerificationTokens EmailVerificationToken[]
+  coursesTaught           Course[]                  @relation("InstructorCourses")
+
   @@index([email])
 }
 
 model Course {
-  id          String       @id @default(cuid())
-  title       String
-  description String
-  thumbnail   String
-  price       Int
-  published   Boolean      @default(false)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  enrollments Enrollment[]
-  payments    Payment[]
-  sections    Section[]
+  id           String       @id @default(cuid())
+  title        String
+  description  String
+  thumbnail    String
+  price        Int
+  published    Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  instructorId String
+  instructor   User         @relation("InstructorCourses", fields: [instructorId], references: [id])
+
+  enrollments  Enrollment[]
+  payments     Payment[]
+  sections     Section[]
 
   @@index([published])
+  @@index([instructorId])
 }
 
 model EmailVerificationToken {
@@ -75,8 +95,9 @@ model Section {
   order     Int
   courseId  String
   createdAt DateTime @default(now())
-  lessons   Lesson[]
+
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons   Lesson[]
 
   @@index([courseId])
 }
@@ -90,6 +111,7 @@ model Lesson {
   order     Int
   sectionId String
   createdAt DateTime   @default(now())
+
   section   Section    @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   progress  Progress[]
 
@@ -102,9 +124,10 @@ model Enrollment {
   courseId   String
   paymentId  String?  @unique
   enrolledAt DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   payment    Payment? @relation(fields: [paymentId], references: [id])
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, courseId])
   @@index([userId])
@@ -123,9 +146,10 @@ model Payment {
   status            PaymentStatus @default(CREATED)
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
-  enrollment        Enrollment?
-  course            Course        @relation(fields: [courseId], references: [id])
+
   user              User          @relation(fields: [userId], references: [id])
+  course            Course        @relation(fields: [courseId], references: [id])
+  enrollment        Enrollment?
 
   @@index([userId])
   @@index([razorpayOrderId])
@@ -138,8 +162,9 @@ model Progress {
   watchedSeconds Int      @default(0)
   completed      Boolean  @default(false)
   lastWatchedAt  DateTime @default(now())
-  lesson         Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson         Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 
   @@unique([userId, lessonId])
   @@index([userId])
@@ -148,13 +173,14 @@ model Progress {
 model Session {
   id               String    @id @default(cuid())
   userId           String
-  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   refreshTokenHash String    @unique
   userAgent        String?
   ip               String?
   expiresAt        DateTime
   revokedAt        DateTime?
   createdAt        DateTime  @default(now())
+
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -167,19 +193,9 @@ model AuditLog {
   metadata  Json?
   ip        String?
   createdAt DateTime @default(now())
+
   actor     User     @relation(fields: [actorId], references: [id])
 
   @@index([actorId, createdAt])
   @@index([targetId, createdAt])
-}
-
-enum Role {
-  STUDENT
-  ADMIN
-}
-
-enum PaymentStatus {
-  CREATED
-  PAID
-  FAILED
 }

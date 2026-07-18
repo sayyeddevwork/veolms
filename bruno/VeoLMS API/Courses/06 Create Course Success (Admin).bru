@@ -1,0 +1,25 @@
+meta {
+  name: 06 Create Course Success (Admin)
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses
+  body: json
+  auth: inherit
+}
+
+body:json {
+{
+  "title":"Admin Course",
+  "description":"Created by admin",
+  "thumbnail":"https://placehold.co/600x400",
+  "price":99900
+}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
