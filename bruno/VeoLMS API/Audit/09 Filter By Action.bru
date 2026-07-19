@@ -1,0 +1,16 @@
+meta {
+  name: 09 Filter By Action
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}{{apiBase}}/audit?action=COURSE_CREATED
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

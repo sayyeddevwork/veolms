@@ -36,6 +36,7 @@ export const listCoursesAdmin = asyncHandler(
 
 export const getCourse = asyncHandler(async (req: Request, res: Response) => {
   // TODO once enrollment module exists: check if req.user is enrolled in this course
+  console.log("entered");
   const isEnrolled = false;
   const course = await courseService.getById(
     req.params.id as string,

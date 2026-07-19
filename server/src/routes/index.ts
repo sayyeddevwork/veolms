@@ -4,6 +4,7 @@ import healthRoute from "../modules/health/health.routes.js";
 import authRoutes from "../modules/auth/auth.routes.js";
 import courseRoutes from "../modules/courses/course.routes.js";
 import userRoutes from "../modules/users/user.routes.js";
+import auditRoutes from "../modules/audit/Audit.routes.js";
 
 const router = express.Router();
 
@@ -11,5 +12,6 @@ router.use(healthRoute);
 router.use("/auth", authRoutes);
 router.use("/courses", courseRoutes);
 router.use("/users", userRoutes);
+router.use("/audit", auditRoutes);
 
 export default router;

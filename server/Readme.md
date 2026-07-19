@@ -140,3 +140,120 @@ DELETE Delete Own Course
 DELETE Instructor Deletes Another Course
 GET Admin List Courses
 ======================
+
+expose localhost outside - use #Serveo# , no installation requiered
+ssh -R 80:localhost:5173 -o ServerAliveInterval=60 -o ServerAliveCountMax=3 serveo.net
+add this into vite.congig
+server: {
+allowedHosts: [
+"d0abea56d27dd6b4-110-235-236-71.serveousercontent.com",
+".serveousercontent.com", // Allow all serveo subdomains
+"localhost",
+],
+},
+
+======================# Repository Structure #==============
+server/
+│
+├── prisma/
+│ ├── migrations/
+│ ├── schema.prisma
+│ └── seed.ts
+│
+├── src/
+│
+│ ├── app.ts
+│ ├── server.ts
+│
+│ ├── config/
+│ │ ├── env.ts
+│ │ ├── index.ts
+│ │ └── cookie.ts
+│ │
+│ ├── constants/
+│ │ ├── audit.constants.ts
+│ │ ├── course.constants.ts
+│ │ ├── auth.constants.ts
+│ │ ├── httpStatusCodes.ts
+│ │ ├── jwt.constants.ts
+│ │ └── prisma-error.constants.ts
+│ │
+│ ├── infrastructure/
+│ │ │
+│ │ ├── database/
+│ │ │ └── prisma.client.ts
+│ │ │
+│ │ ├── logging/
+│ │ │ ├── pino.instance.ts
+│ │ │ ├── request.logger.ts
+│ │ │ └── index.ts
+│ │ │
+│ │ ├── cache/
+│ │ │
+│ │ ├── queue/
+│ │ │
+│ │ ├── mail/
+│ │ │
+│ │ ├── storage/
+│ │ │
+│ │ └── payment/
+│ │
+│ ├── middleware/
+│ │ ├── authenticate.ts
+│ │ ├── authorize.ts
+│ │ ├── validate.ts
+│ │ ├── errorHandler.ts
+│ │ ├── notFound.ts
+│ │ ├── requestId.ts
+│ │ ├── asyncHandler.ts
+│ │ └── rateLimiter.ts
+│ │
+│ ├── modules/
+│ │
+│ │ ├── auth/
+│ │ │
+│ │ ├── users/
+│ │ │
+│ │ ├── audit/
+│ │ │
+│ │ ├── courses/
+│ │ │
+│ │ ├── sections/
+│ │ │
+│ │ ├── lessons/
+│ │ │
+│ │ ├── enrollments/
+│ │ │
+│ │ ├── progress/
+│ │ │
+│ │ ├── payments/
+│ │ │
+│ │ ├── certificates/
+│ │ │
+│ │ ├── reviews/
+│ │ │
+│ │ ├── notifications/
+│ │ │
+│ │ ├── analytics/
+│ │ │
+│ │ ├── search/
+│ │ │
+│ │ └── health/
+│ │
+│ ├── routes/
+│ │ └── index.ts
+│ │
+│ ├── shared/
+│ │ ├── dto/
+│ │ ├── errors/
+│ │ ├── response/
+│ │ ├── utils/
+│ │ └── types/
+│ │
+│ └── docs/
+│ └── openapi/
+│
+├── tests/
+│
+└── package.json
+=======================================

@@ -1,0 +1,16 @@
+meta {
+  name: 05 Student Access
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}{{apiBase}}/audit
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -5,9 +5,23 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}
-  body: none
+  url: {{baseUrl}}{{apiBase}}/courses/:id
+  body: json
   auth: inherit
+}
+
+params:path {
+  id: cmrqs295e0000jdvemybpxjie
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "courseId":"cmrqs295e0000jdvemybpxjie"
+  }
 }
 
 settings {

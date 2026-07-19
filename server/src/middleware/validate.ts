@@ -30,6 +30,12 @@ export const validate = (schemas: ValidationSchemas) => {
       const result = schema.safeParse(req[part]);
       if (!result.success) {
         allErrors.push(...zodIssuesToErrorDetails(result.error));
+      } else if (part === "query") {
+        Object.defineProperty(req, "query", {
+          value: result.data,
+          writable: true,
+          configurable: true,
+        });
       } else {
         // Assign parsed/coerced data back (e.g. query string "5" -> number 5)
         req[part] = result.data;

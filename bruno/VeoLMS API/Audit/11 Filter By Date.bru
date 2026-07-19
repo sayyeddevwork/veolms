@@ -1,0 +1,16 @@
+meta {
+  name: 11 Filter By Date
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}{{apiBase}}/audit?from=2026-07-01&to=2026-07-19
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

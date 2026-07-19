@@ -111,7 +111,7 @@ const register = async (input: RegisterInput, device: DeviceInfo) => {
     },
   });
 
-  const verifyUrl = `${config.app.corsOrigins[0]}/verify-email?token=${rawToken}`;
+  const verifyUrl = `${config.app.corsOrigins[0]}/api/v1/auth/verify-email?token=${rawToken}`;
 
   try {
     await sendVerificationEmail(user.email, user.name, verifyUrl);

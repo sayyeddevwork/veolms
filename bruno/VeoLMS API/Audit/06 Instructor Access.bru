@@ -1,0 +1,16 @@
+meta {
+  name: 06 Instructor Access
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}{{apiBase}}/audit
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
