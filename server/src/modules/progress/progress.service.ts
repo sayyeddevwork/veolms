@@ -6,6 +6,7 @@ import { NotFoundError } from "../../shared/errors/NotFoundError.js";
 import { AuthorizationError } from "../../shared/errors/AuthorizationError.js";
 import { UpdateProgressInput } from "./progress.types.js";
 import { prisma } from "../../infrastructure/database/prisma.client.js";
+import { certificateService } from "../certificates/certificate.service.js";
 
 // Walks lesson -> section -> course to find which course a lesson belongs to,
 // so we can check enrollment before allowing progress updates.
@@ -32,8 +33,12 @@ export const progressService = {
         "You must be enrolled in this course to track progress",
       );
     }
+    const progress = await progressRepository.upsert(userId, lessonId, input);
+    if (input.completed) {
+      await certificateService.checkAndIssueIfEligible(userId, courseId);
+    }
 
-    return progressRepository.upsert(userId, lessonId, input);
+    return progress;
   },
 
   getCourseProgress: async (userId: string, courseId: string) => {
