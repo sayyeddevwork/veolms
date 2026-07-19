@@ -1,0 +1,22 @@
+meta {
+  name: 08 Admin Update
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}/sections/{{unknownSectionId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Admin Updated"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

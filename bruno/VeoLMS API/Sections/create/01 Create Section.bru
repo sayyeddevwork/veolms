@@ -1,0 +1,23 @@
+meta {
+  name: 01 Create Section
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses/cmrrlz5f70002jdfmsxsgkm8l/sections
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Introduction",
+    "order": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

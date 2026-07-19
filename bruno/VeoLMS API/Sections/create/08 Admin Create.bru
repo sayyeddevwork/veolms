@@ -1,0 +1,23 @@
+meta {
+  name: 08 Admin Create
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}/sections
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Introduction",
+    "order": 2
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,22 @@
+meta {
+  name: 02 Missing Title
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses/cmrrlz5f70002jdfmsxsgkm8l/sections
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "order": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

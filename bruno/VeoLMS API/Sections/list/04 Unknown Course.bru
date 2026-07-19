@@ -1,11 +1,11 @@
 meta {
-  name: Student new course enrolment
+  name: 04 Unknown Course
   type: http
-  seq: 1
+  seq: 4
 }
 
 get {
-  url: {{baseUrl}}{{apiBase}}/auth/login
+  url: {{baseUrl}}{{apiBase}}/courses/{{unknownCourseId}}/sections
   body: none
   auth: inherit
 }

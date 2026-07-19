@@ -1,0 +1,22 @@
+meta {
+  name: 07 Other Instructor
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}/sections/{{unknownSectionId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title":"Updated"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

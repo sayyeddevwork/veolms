@@ -1,0 +1,23 @@
+meta {
+  name: 01 Update Section
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}/sections/{{sectionId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title":"Updated Section"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

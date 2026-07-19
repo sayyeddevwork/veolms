@@ -16,14 +16,13 @@ import {
   courseIdParamSchema,
 } from "./course.schema.js";
 import { UserRole } from "../../shared/types/roles.js";
+import sectionRoutes from "../sections/section.routes.js"; // ← add this
 
 const router = Router();
 
-// Public routes — no auth required
 router.get("/", listCourses);
 router.get("/:id", validate(courseIdParamSchema), getCourse);
 
-// Admin-only routes
 router.post(
   "/",
   authenticate,
@@ -51,5 +50,7 @@ router.delete(
   validate(courseIdParamSchema),
   deleteCourse,
 );
+
+router.use("/:courseId/sections", sectionRoutes); // ← add this
 
 export default router;

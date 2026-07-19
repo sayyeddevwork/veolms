@@ -1,0 +1,16 @@
+meta {
+  name: 01 Delete Section
+  type: http
+  seq: 1
+}
+
+delete {
+  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}/sections/{{sectionId}}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

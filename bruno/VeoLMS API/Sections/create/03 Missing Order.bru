@@ -1,0 +1,22 @@
+meta {
+  name: 03 Missing Order
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses/cmrrlz5f70002jdfmsxsgkm8l/sections
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Introduction"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,16 @@
+meta {
+  name: 02 Invalid Section
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}/sections/invalid-id
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

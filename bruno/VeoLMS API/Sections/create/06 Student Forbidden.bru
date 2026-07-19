@@ -1,0 +1,23 @@
+meta {
+  name: 06 Student Forbidden
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}/sections
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Introduction",
+    "order": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

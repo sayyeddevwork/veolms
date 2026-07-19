@@ -1,19 +1,19 @@
 meta {
-  name: 01 Login Success
+  name: 07 Other Instructor
   type: http
   seq: 7
 }
 
 post {
-  url: {{baseUrl}}{{apiBase}}/auth/login
+  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}/sections
   body: json
   auth: inherit
 }
 
 body:json {
   {
-    "email": "shamreen@example.com",
-    "password": "Password@123"
+    "title": "Introduction",
+    "order": 1
   }
 }
 
