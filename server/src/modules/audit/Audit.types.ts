@@ -9,6 +9,11 @@ export enum AuditAction {
   USER_REGISTERED = "user.registered",
   USER_LOGIN = "user.login",
   USER_LOGOUT = "user.logout",
+
+  // add to AuditAction enum
+  SECTION_CREATED = "section.created",
+  SECTION_UPDATED = "section.updated",
+  SECTION_DELETED = "section.deleted",
 }
 
 export interface RecordAuditLogInput {
