@@ -16,6 +16,20 @@ export const getInstructorAnalytics = asyncHandler(
     );
   },
 );
+export const getInstructorAnalyticsById = asyncHandler(
+  async (req: Request, res: Response) => {
+    const result = await analyticsService.getInstructorOverviewById(
+      req.params.instructorId as string,
+    );
+    sendSuccess(
+      res,
+      req.requestId,
+      HttpStatusCode.OK,
+      "Instructor analytics fetched",
+      result,
+    );
+  },
+);
 
 export const getAdminAnalytics = asyncHandler(
   async (req: Request, res: Response) => {

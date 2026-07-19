@@ -36,6 +36,13 @@ export const analyticsRepository = {
     };
   },
 
+  findInstructorById: (instructorId: string) => {
+    return prisma.user.findUnique({
+      where: { id: instructorId },
+      select: { id: true, name: true, role: true },
+    });
+  },
+
   getCourseCompletionRate: async (courseId: string): Promise<number> => {
     const totalLessons = await prisma.lesson.count({
       where: { section: { courseId } },

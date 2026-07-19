@@ -1,4 +1,6 @@
 import { analyticsRepository } from "./analytics.repository.js";
+import { NotFoundError } from "../../shared/errors/NotFoundError.js";
+import { UserRole } from "../../shared/types/roles.js";
 
 export const analyticsService = {
   getInstructorOverview: async (instructorId: string) => {
@@ -41,6 +43,22 @@ export const analyticsService = {
       totalStudents,
       totalRevenue,
       courses: courseAnalytics,
+    };
+  },
+
+  getInstructorOverviewById: async (instructorId: string) => {
+    const instructor =
+      await analyticsRepository.findInstructorById(instructorId);
+
+    if (!instructor || instructor.role !== UserRole.INSTRUCTOR) {
+      throw new NotFoundError("Instructor not found");
+    }
+
+    const overview = await analyticsService.getInstructorOverview(instructorId);
+
+    return {
+      instructor: { id: instructor.id, name: instructor.name },
+      ...overview,
     };
   },
 

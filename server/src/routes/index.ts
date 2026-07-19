@@ -13,6 +13,7 @@ import certificateRoutes from "../modules/certificates/certificate.routes.js";
 import reviewRoutes from "../modules/reviews/review.routes.js";
 import notificationRoutes from "../modules/notifications/notification.routes.js";
 import analyticsRoutes from "../modules/analytics/analytics.routes.js";
+import searchRoutes from "../modules/search/search.routes.js";
 
 const router = express.Router();
 
@@ -29,5 +30,6 @@ router.use("/certificates", certificateRoutes);
 router.use("/:courseId/reviews", reviewRoutes);
 router.use("/notifications", notificationRoutes);
 router.use("/analytics", analyticsRoutes);
+router.use("/search", searchRoutes);
 
 export default router;
