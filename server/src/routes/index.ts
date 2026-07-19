@@ -10,6 +10,7 @@ import sectionRoutes from "../modules/sections/section.routes.js";
 import lessonRoutes from "../modules/lessons/lesson.routes.js";
 import progressRoutes from "../modules/progress/progress.routes.js";
 import certificateRoutes from "../modules/certificates/certificate.routes.js";
+import reviewRoutes from "../modules/reviews/review.routes.js";
 
 const router = express.Router();
 
@@ -23,5 +24,6 @@ router.use("/:courseId/sections", sectionRoutes);
 router.use("/:sectionId/lessons", lessonRoutes);
 router.use("/progress", progressRoutes);
 router.use("/certificates", certificateRoutes);
+router.use("/:courseId/reviews", reviewRoutes);
 
 export default router;
