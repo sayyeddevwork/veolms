@@ -4,6 +4,8 @@ import { courseService } from "./course.service.js";
 import { sendSuccess } from "../../shared/response/apiResponse.js";
 import { HttpStatusCode } from "../../constants/httpStatusCodes.js";
 import { enrollmentService } from "../enrollments/enrollment.service.js";
+import { AppError } from "../../shared/errors/AppError.js";
+import { uploadFile } from "../../infrastructure/storage/r2.client.js";
 
 export const createCourse = asyncHandler(
   async (req: Request, res: Response) => {
@@ -32,6 +34,26 @@ export const listCoursesAdmin = asyncHandler(
     sendSuccess(res, req.requestId, HttpStatusCode.OK, "All courses fetched", {
       courses,
     });
+  },
+);
+export const uploadCourseThumbnail = asyncHandler(
+  async (req: Request, res: Response) => {
+    if (!req.file) {
+      throw new AppError(HttpStatusCode.BAD_REQUEST, "No file uploaded");
+    }
+
+    const url = await uploadFile(
+      req.file.buffer,
+      req.file.originalname,
+      req.file.mimetype,
+    );
+    sendSuccess(
+      res,
+      req.requestId,
+      HttpStatusCode.OK,
+      "Thumbnail uploaded successfully",
+      { url },
+    );
   },
 );
 

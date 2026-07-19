@@ -6,6 +6,7 @@ import {
   getCourse,
   updateCourse,
   deleteCourse,
+  uploadCourseThumbnail,
 } from "./course.controller.js";
 import { validate } from "../../middleware/validate.js";
 import { authenticate } from "../../middleware/authenticate.js";
@@ -16,7 +17,8 @@ import {
   courseIdParamSchema,
 } from "./course.schema.js";
 import { UserRole } from "../../shared/types/roles.js";
-import sectionRoutes from "../sections/section.routes.js"; // ← add this
+import sectionRoutes from "../sections/section.routes.js";
+import { uploadThumbnail } from "../../middleware/upload.js";
 
 const router = Router();
 
@@ -51,6 +53,13 @@ router.delete(
   deleteCourse,
 );
 
-router.use("/:courseId/sections", sectionRoutes); // ← add this
+router.use("/:courseId/sections", sectionRoutes);
+router.post(
+  "/upload-thumbnail",
+  authenticate,
+  authorize(UserRole.ADMIN, UserRole.INSTRUCTOR),
+  uploadThumbnail,
+  uploadCourseThumbnail,
+);
 
 export default router;

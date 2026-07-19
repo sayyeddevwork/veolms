@@ -10,6 +10,7 @@ import { globalErrorHandler } from "./middleware/errorHandler.js";
 import { API_BASE_PATH } from "./constants/api.constants.js";
 import router from "./routes/index.js";
 import { requestLogger } from "./infrastructure/logging/index.js";
+import { generalRateLimiter } from "./middleware/rateLimiter.js";
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.use(metricsMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(generalRateLimiter);
 app.use(requestLogger);
 app.use(API_BASE_PATH, router);
 

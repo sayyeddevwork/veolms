@@ -42,6 +42,19 @@ const envSchema = z.object({
   RAZORPAY_KEY_ID: z.string().min(1),
   RAZORPAY_KEY_SECRET: z.string().min(1),
   RAZORPAY_WEBHOOK_SECRET: z.string().min(1),
+
+  // Rate limiting
+  RATE_LIMIT_WINDOW_MS: z.coerce
+    .number()
+    .int()
+    .positive()
+    .default(15 * 60 * 1000),
+  RATE_LIMIT_MAX_REQUESTS: z.coerce.number().int().positive().default(100),
+  R2_ACCOUNT_ID: z.string().min(1),
+  R2_ACCESS_KEY_ID: z.string().min(1),
+  R2_SECRET_ACCESS_KEY: z.string().min(1),
+  R2_BUCKET_NAME: z.string().min(1),
+  R2_PUBLIC_URL: z.string().url(), // your bucket's public access URL or custom domain
 });
 
 export type EnvSchema = z.infer<typeof envSchema>;
