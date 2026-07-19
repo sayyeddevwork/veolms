@@ -34,6 +34,13 @@ export const courseRepository = {
       },
     });
   },
+  findOwnerId: async (id: string): Promise<string | null> => {
+    const course = await prisma.course.findUnique({
+      where: { id },
+      select: { instructorId: true },
+    });
+    return course?.instructorId ?? null;
+  },
 
   findOwnership: (id: string) => {
     return prisma.course.findUnique({

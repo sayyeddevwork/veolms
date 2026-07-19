@@ -5,13 +5,17 @@ meta {
 }
 
 patch {
-  url: {{baseUrl}}{{apiBase}}/courses/{{courseId}}
+  url: {{baseUrl}}{{apiBase}}/courses/:id
   body: json
   auth: inherit
 }
 
+params:path {
+  id: cmrrlz5f70002jdfmsxsgkm8l
+}
+
 body:json {
-{ "published": true }
+  { "published": true }
 }
 
 settings {

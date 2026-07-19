@@ -1,0 +1,16 @@
+meta {
+  name: 02 Get Course Enrollments (Instructor)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}{{apiBase}}/enrollments/courses/{{courseId}}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,16 @@
+meta {
+  name: 05 Course Not Found
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}{{apiBase}}/enrollments/courses/{{unknownCourseId}}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -3,6 +3,7 @@ import { asyncHandler } from "../../middleware/asyncHandler.js";
 import { courseService } from "./course.service.js";
 import { sendSuccess } from "../../shared/response/apiResponse.js";
 import { HttpStatusCode } from "../../constants/httpStatusCodes.js";
+import { enrollmentService } from "../enrollments/enrollment.service.js";
 
 export const createCourse = asyncHandler(
   async (req: Request, res: Response) => {
@@ -35,13 +36,11 @@ export const listCoursesAdmin = asyncHandler(
 );
 
 export const getCourse = asyncHandler(async (req: Request, res: Response) => {
-  // TODO once enrollment module exists: check if req.user is enrolled in this course
-  console.log("entered");
-  const isEnrolled = false;
-  const course = await courseService.getById(
-    req.params.id as string,
-    isEnrolled,
-  );
+  const courseId = req.params.id as string;
+  const isEnrolled = req.user
+    ? await enrollmentService.isEnrolled(req.user.id, courseId)
+    : false;
+  const course = await courseService.getById(courseId, isEnrolled);
   sendSuccess(res, req.requestId, HttpStatusCode.OK, "Course fetched", {
     course,
   });

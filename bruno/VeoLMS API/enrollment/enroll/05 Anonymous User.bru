@@ -1,0 +1,16 @@
+meta {
+  name: 05 Anonymous User
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/enrollments/courses/{{courseId}}/enroll
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

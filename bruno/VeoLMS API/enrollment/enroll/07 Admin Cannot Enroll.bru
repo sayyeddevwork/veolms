@@ -1,0 +1,16 @@
+meta {
+  name: 07 Admin Cannot Enroll
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}{{apiBase}}/enrollments/courses/{{courseId}}/enroll
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
