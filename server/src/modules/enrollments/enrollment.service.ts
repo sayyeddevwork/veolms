@@ -6,6 +6,8 @@ import { AppError } from "../../shared/errors/AppError.js";
 import { HttpStatusCode } from "../../constants/httpStatusCodes.js";
 import auditService from "../audit/Audit.service.js";
 import { EnrollmentAction } from "../../constants/enrollment.constants.js";
+import { notificationService } from "../notifications/notification.service.js";
+import { prisma } from "../../infrastructure/database/prisma.client.js";
 
 export const enrollmentService = {
   // Direct enrollment path — only valid for free (price === 0) courses.
@@ -40,6 +42,23 @@ export const enrollmentService = {
       metadata: { courseId },
       ip,
     });
+
+    // Fetch email separately since only userId (not the full user) is available here
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { email: true },
+    });
+
+    await notificationService.notify(
+      {
+        userId,
+        type: "ENROLLMENT_SUCCESS",
+        title: "Enrollment Confirmed",
+        message: `You are now enrolled in "${course.title}".`,
+        link: `/courses/${courseId}`,
+      },
+      user?.email,
+    );
 
     return enrollment;
   },

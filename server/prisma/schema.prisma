@@ -42,6 +42,7 @@ model User {
   passwordResetTokens     PasswordResetToken[]
   emailVerificationTokens EmailVerificationToken[]
   certificates            Certificate[]
+  notifications           Notification[]
   coursesTaught           Course[]                  @relation("InstructorCourses")
 
   @@index([email])
@@ -65,7 +66,7 @@ model Course {
   payments     Payment[]
   certificates Certificate[]
   reviews      Review[]
-  
+
   @@index([published])
   @@index([instructorId])
 }
@@ -235,4 +236,27 @@ model Review {
 
   @@unique([userId, courseId])
   @@index([courseId])
+}
+
+enum NotificationType {
+  ENROLLMENT_SUCCESS
+  CERTIFICATE_ISSUED
+  NEW_REVIEW
+  COURSE_PUBLISHED
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  link      String?
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+  @@index([userId, createdAt])
 }
