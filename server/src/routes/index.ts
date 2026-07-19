@@ -8,6 +8,7 @@ import auditRoutes from "../modules/audit/Audit.routes.js";
 import enrollmentRoutes from "../modules/enrollments/enrollment.routes.js";
 import sectionRoutes from "../modules/sections/section.routes.js";
 import lessonRoutes from "../modules/lessons/lesson.routes.js";
+import progressRoutes from "../modules/progress/progress.routes.js";
 
 const router = express.Router();
 
@@ -19,5 +20,6 @@ router.use("/audit", auditRoutes);
 router.use("/enrollments", enrollmentRoutes);
 router.use("/:courseId/sections", sectionRoutes);
 router.use("/:sectionId/lessons", lessonRoutes);
+router.use("/progress", progressRoutes);
 
 export default router;
